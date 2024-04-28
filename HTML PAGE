@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Page HTML</title>
+    <style>
+        /* Common CSS styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CSS styles for Sequence Prediction page */
+        .sequence-prediction {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+        .container.sequence-prediction {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1.sequence-prediction {
+            margin-bottom: 20px;
+            font-weight: 300;
+            color: #333;
+        }
+        input.sequence-prediction {
+            padding: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            font-size: 18px;
+            background-color: #f2f2f2;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        input.sequence-prediction:focus {
+            border-color: #2196F3;
+        }
+        button.sequence-prediction {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button.sequence-prediction:hover {
+            background-color: #45a049;
+        }
+        #output.sequence-prediction {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #200;
+        }
+
+        /* CSS styles for Bullish/Bearish Prediction page */
+        .bullish-bearish-prediction {
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+        .container.bullish-bearish-prediction {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h2.bullish-bearish-prediction {
+            margin-bottom: 20px;
+            font-weight: 300;
+            color: #333;
+        }
+        input.bullish-bearish-prediction {
+            padding: 12px;
+            margin-bottom: 20px;
+            width: calc(100% - 24px);
+            box-sizing: border-box;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            font-size: 18px;
+            background-color: #f2f2f2;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        input.bullish-bearish-prediction:focus {
+            border-color: #2196F3;
+        }
+        button.bullish-bearish-prediction {
+            padding: 12px 24px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button.bullish-bearish-prediction:hover {
+            background-color: #45a049;
+        }
+        #output.bullish-bearish-prediction {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #200;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Prompt Section -->
+    <div id="login-container" style="justify-content: center; align-items: center; height: 100vh; background-color: #f8f8f8;">
+        <div class="container" style="text-align: center;">
+            <h2>Please enter the password to access the content:</h2>
+            <input type="password" id="password">
+            <button onclick="checkPassword()">Submit</button>
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <!-- Sequence Prediction Page -->
+    <div class="sequence-prediction container" style="display: none;">
+        <h1 class="sequence-prediction">Sequence Prediction</h1>
+        <input class="sequence-prediction" type="text" id="sequenceInput" placeholder="Enter sequence">
+        <button class="sequence-prediction" onclick="predictNext()">Predict</button>
+        <div id="output" class="sequence-prediction"></div>
+    </div>
+
+    <!-- Bullish/Bearish Prediction Page -->
+    <div class="bullish-bearish-prediction container" style="display: none;">
+        <h2 class="bullish-bearish-prediction">Bullish/Bearish Predictor</h2>
+        <p>Enter a sequence of numbers (enter a non-number to stop):</p>
+        <input class="bullish-bearish-prediction" type="number" id="numberInput" placeholder="Enter a number">
+        <button class="bullish-bearish-prediction" onclick="addNumber()">Add Number</button>
+        <div id="output" class="bullish-bearish-prediction"></div>
+    </div>
+
+    <!-- JavaScript for Password Verification -->
+    <script>
+        function checkPassword() {
+            var password = document.getElementById("password").value;
+            if (password === "CocoaTucker24!") {
+                document.getElementById("login-container").style.display = "none";
+                document.querySelector(".sequence-prediction").style.display = "flex";
+                document.querySelector(".bullish-bearish-prediction").style.display = "flex";
+            } else {
+                document.getElementById("message").innerText = "Incorrect password. Please try again.";
+            }
+        }
+    </script>
+
+    <!-- JavaScript for Bullish/Bearish Prediction -->
+    <script>
+        let sequence = [];
+
+        function addNumber() {
+            const inputElement = document.getElementById('numberInput');
+            const number = parseInt(inputElement.value);
+            if (!isNaN(number)) {
+                sequence.push(number);
+                inputElement.value = '';
+                document.getElementById('output').innerText = `Sequence: ${sequence.join(', ')}`;
+            } else {
+                if (sequence.length < 2) {
+                    alert('Insufficient sequence to predict the next number.');
+                } else {
+                    const nextNumber = predictNextNumber(sequence);
+                    if (nextNumber !== -1) {
+                        document.getElementById('output').innerText = `Predicted next number in the sequence: ${nextNumber}`;
+                    }
+                }
+            }
+        }
+
+        function predictNextNumber(sequence) {
+            const n = sequence.length;
+            const increasing = sequence[n - 1] > sequence[0];
+            if (increasing) {
+                return sequence[sequence.length - 1] + (sequence[sequence.length - 1] - sequence[n - 2]);
+            } else {
+                return sequence[sequence.length - 1] - (sequence[n - 2] - sequence[sequence.length - 1]);
+            }
+        }
+    </script>
+
+    <!-- JavaScript for Sequence Prediction -->
+    <script>
+        function predictNext() {
+            let sequenceInput = document.getElementById("sequenceInput").value.trim();
+            let sequenceArray = sequenceInput.split(" ").map(Number);
+
+            if (sequenceArray.length < 8 || sequenceArray.some(isNaN)) {
+                document.getElementById("output").innerText = "Insufficient or invalid data provided.";
+                return;
+            }
+
+            let increaseAvgHv = true;
+
+            let prediction = predictNextTwo(sequenceArray, increaseAvgHv);
+            document.getElementById("output").innerText = "Predicted next number(s) in the sequence: " + prediction.join(", ");
+        }
+
+        function predictNextTwo(sequence, increaseAvgHv) {
+            let prediction = [];
+
+            let fLsL = 0;
+            let sLfL = 0;
+
+            for (let i = 1; i <= 7; i += 2) {
+                fLsL += sequence[sequence.length - i];
+            }
+
+            for (let i = 2; i <= 8; i += 2) {
+                sLfL += sequence[sequence.length - i];
+            }
+
+            let avgLv = fLsL / 4;
+            let avgHv = sLfL / 4;
+
+            let secLa = sequence[sequence.length - 2];
+            let fouLa = sequence[sequence.length - 4];
+            let sixLa = sequence[sequence.length - 6];
+            let EigLa = sequence[sequence.length - 8];
+
+            let La = sequence[sequence.length - 1];
+            let thiLa = sequence[sequence.length - 3];
+            let fitLa = sequence[sequence.length - 5];
+            let sevLa = sequence[sequence.length - 7];
+
+            let firstThirdSub = La - thiLa;
+            let firthSeventhSub = fitLa - sevLa;
+
+            let secondFourthSub = secLa - fouLa;
+            let sixthEigthSub = sixLa - EigLa;
+
+            let incrSum = firstThirdSub + firthSeventhSub;
+            let incrAvg = incrSum / 0.8;
+
+            let incSum = secondFourthSub + sixthEigthSub;
+            let incAvg = incSum / 0.8;
+
+            avgHv += incAvg;
+            avgLv += incrAvg;
+
+            if (increaseAvgHv) {
+            }
+
+            prediction.push(avgHv);
+            prediction.push(avgLv);
+
+            return prediction;
+        }
+    </script>
+</body>
+</html>
